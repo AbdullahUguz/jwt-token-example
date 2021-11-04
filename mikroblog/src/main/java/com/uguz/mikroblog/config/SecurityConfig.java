@@ -71,7 +71,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
     }
-    
+     
     @Override
     public void configure(HttpSecurity httpSecurity) throws Exception {
     	httpSecurity
@@ -81,9 +81,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
     		.exceptionHandling().authenticationEntryPoint(handler).and()
     		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
     		.authorizeRequests()
-    		.antMatchers("/auth/**")
+    		.antMatchers("/auth/**","/h2-console/**")
     		.permitAll()
     		.anyRequest().authenticated();
+    	httpSecurity.headers().frameOptions().disable();
     		
     	httpSecurity.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
